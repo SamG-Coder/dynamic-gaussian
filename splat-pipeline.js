@@ -19,8 +19,8 @@ export class CudaSplatPipeline {
     const mesh = pipeline.mesh = new GaussianSplat(geometry, { autoSort: false });
     mesh.name = 'CUDA procedural Gaussian scene';
     // Conservative authored bounds, never infer bounds from stale CPU allocation seeds.
-    mesh.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 1000, -2000), 9000);
-    mesh.boundingBox = new THREE.Box3(new THREE.Vector3(-7500, -1000, -4800), new THREE.Vector3(7500, 4300, 65));
+    mesh.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 11000);
+    mesh.boundingBox = new THREE.Box3(new THREE.Vector3(-7500, -1000, -7500), new THREE.Vector3(7500, 6000, 7500));
     mesh.frustumCulled = false;
     // Default raycasting reads CPU seed geometry. Disable it until GPU picking exists.
     mesh.raycast = () => {};
