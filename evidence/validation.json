@@ -47,7 +47,7 @@
     "frameReadbackBytes": 0,
     "frameSceneUploadBytes": 0,
     "frames": 97,
-    "observedFps": 60.468174848522224,
+    "observedFps": 59.531986998450385,
     "fft": {
       "n": 256,
       "heightRms": 0.8639765049728692,
@@ -78,10 +78,30 @@
       "depthChanges": 679669
     }
   },
+  "gaussianWater": {
+    "splats": 1315856,
+    "pixelPassDisabled": true,
+    "quadrants": [
+      48705,
+      48705,
+      48705,
+      48705
+    ],
+    "furthest": 5932.640696293201,
+    "minDet": 0.000009112499254854326,
+    "waterMotion": 196608,
+    "sandMotion": 0,
+    "sandLightMotion": 191346,
+    "reflectionChanges": 196096,
+    "sandCaustics": 89484,
+    "frameReadbackBytes": 0,
+    "frameSceneUploadBytes": 0
+  },
   "desktopDisposed": true,
   "mobile": {
     "splats": 58896,
     "noOverflow": true,
-    "controlsCollapsed": true
+    "controlsCollapsed": true,
+    "gaussianSplats": 153104
   }
 }

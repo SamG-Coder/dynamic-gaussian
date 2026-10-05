@@ -157,6 +157,71 @@ try {
   await page.screenshot({ path: new URL('open-sea.png', evidence).pathname.replace(/^\/([A-Za-z]:)/, '$1') });
   await page.getByRole('button',{name:'Pause',exact:true}).click();
   if (await page.getByRole('button',{name:'Resume',exact:true}).count() !== 1) throw new Error('Pause UI failed');
+  await page.getByRole('button',{name:'Golden hour',exact:true}).click();
+  const originalPipelineCount=await page.evaluate(()=>gaussianDemo.pipeline.count);
+  await page.locator('#renderer-mode').selectOption('splats');
+  await page.waitForFunction(()=>gaussianDemo.state.renderer==='splats'||gaussianDemo.error,null,{timeout:60000});
+  report.gaussianWater=await page.evaluate(async()=>{
+    const d=gaussianDemo,rt=d.runtime,p=d.pipeline;
+    const assert=(value,message)=>{if(!value)throw Error(message);};
+    assert(!d.error,d.error);assert(!d.water.mesh.visible&&p.mesh.visible,'Per-pixel overlay active in Gaussian mode');
+    const oldUpdate=d.water.update;d.water.update=()=>{throw Error('Pixel water dispatched during splat rendering');};
+    const read=name=>rt.read(p.resources[name],name==='colors'?Uint32Array:Float32Array);
+    const changed=(a,b,start,end)=>{let n=0;for(let i=start;i<end;i++)if(a[i]!==b[i])n++;return n;};
+    const water=p.layers.find(l=>l.name==='ocean'),sand=p.layers.find(l=>l.name==='sand');
+    const beforeRead=rt.stats.readbackBytes,beforeUpload=rt.stats.dataBytesUploaded;
+    d.renderAt(3);await rt.idle();assert(rt.stats.readbackBytes===beforeRead&&rt.stats.dataBytesUploaded===beforeUpload,'Splat mode reads back or uploads frame data');
+    const centers=await read('centers'),a=await read('covA'),b=await read('covB'),colors=await read('colors');
+    const quadrants=[0,0,0,0];let furthest=0,minDet=Infinity;
+    for(const layer of p.layers.filter(l=>l.entry==='surface_splats'))for(let i=layer.offset;i<layer.offset+layer.count;i++){
+      const k=i*4,xx=a[k],xy=a[k+1],xz=a[k+2],yy=a[k+3],yz=b[k],zz=b[k+1];
+      assert([centers[k],centers[k+1],centers[k+2],xx,xy,xz,yy,yz,zz].every(Number.isFinite),'Invalid Gaussian surface data');
+      const determinant=xx*(yy*zz-yz*yz)-xy*(xy*zz-xz*yz)+xz*(xy*yz-xz*yy);minDet=Math.min(minDet,determinant);
+      assert(xx>0&&xx*yy-xy*xy>0&&determinant>0,'Surface covariance is not positive definite');
+      if(layer.name==='ocean'&&(colors[i]>>>24)>8)quadrants[(centers[k]>d.camera.position.x?1:0)+(centers[k+2]>d.camera.position.z?2:0)]++;
+      if(layer.name==='far-ocean')furthest=Math.max(furthest,Math.hypot(centers[k]-d.camera.position.x,centers[k+2]-d.camera.position.z));
+    }
+    assert(quadrants.every(v=>v>100)&&furthest>5000,'Gaussian water does not surround the camera');
+    const attr=p.mesh._sort.orderAttribute,resource=rt.importBuffer(d.renderer.backend.get(attr).buffer,p.count*4,'splat-mode sort test');
+    const order=await rt.read(resource,Uint32Array);rt.destroyBuffer(resource);
+    assert(new Set(order).size===p.count&&order.every(i=>i<p.count),'Full-scene Gaussian sort permutation invalid');
+    const m=p.mesh._sortMatrix.value.elements;let previous=-1;
+    for(const i of order){const j=i*4,z=-(m[2]*centers[j]+m[6]*centers[j+1]+m[10]*centers[j+2]+m[14]);const bin=4095-Math.floor(Math.max(0,Math.min(1,Math.log2(Math.max(z,.25)/.25)/Math.log2(6000/.25)))*4095);assert(bin+1>=previous,'Full-scene depth order invalid');previous=bin;}
+    d.renderAt(8);await rt.idle();const later=await read('centers'),laterColors=await read('colors');
+    const waterMotion=changed(centers,later,water.offset*4,(water.offset+water.count)*4);
+    const sandMotion=changed(centers,later,sand.offset*4,(sand.offset+sand.count)*4);
+    const sandLightMotion=changed(colors,laterColors,sand.offset,sand.offset+sand.count);
+    assert(waterMotion>100&&sandMotion===0&&sandLightMotion>100,'Waves or animated caustics on a fixed sand bed are missing');
+    d.state.reflections=0;d.renderAt(3);await rt.idle();const matte=await read('colors');
+    const reflectionChanges=changed(colors,matte,water.offset,water.offset+water.count);assert(reflectionChanges>100,'Splat reflections missing');d.state.reflections=.9;
+    d.state.sand=false;d.state.causticStrength=0;d.renderAt(3);await rt.idle();const noSand=await read('colors');
+    d.state.causticStrength=3;d.renderAt(3);await rt.idle();const noSandBright=await read('colors');
+    assert(changed(noSand,noSandBright,water.offset,water.offset+water.count)===0,'Caustics illuminate water without sand in splat mode');
+    d.state.sand=true;d.state.causticStrength=0;d.renderAt(3);await rt.idle();const dim=await read('colors');
+    d.state.causticStrength=3;d.renderAt(3);await rt.idle();const bright=await read('colors');
+    const sandCaustics=changed(dim,bright,sand.offset,sand.offset+sand.count);assert(sandCaustics>100,'Caustics absent from sand splats');
+    for(let i=sand.offset;i<sand.offset+sand.count;i++)for(const shift of [0,8,16])assert(((bright[i]>>>shift)&255)>=((dim[i]>>>shift)&255),'Caustic strength darkens sand splats');
+    d.state.depth=8;d.renderAt(3);await rt.idle();const deep=await read('centers');assert(Math.abs(deep[sand.offset*4+1]-centers[sand.offset*4+1]+5)<.001,'Sand depth does not move seabed splats');
+    d.state.depth=3;d.state.causticStrength=1.4;
+    for(const key of ['ocean','sand','far']){
+      d.state[key]=false;d.renderAt(3);await rt.idle();const hidden=await read('colors');
+      const names=key==='far'?['far-ocean','far-sand']:key==='ocean'?['ocean','far-ocean']:['sand','far-sand'];
+      for(const name of names){const l=p.layers.find(l=>l.name===name);assert(hidden.subarray(l.offset,l.offset+l.count).every(v=>(v>>>24)===0),`${name} visibility failed`);}d.state[key]=true;
+    }
+    d.renderAt(3);await rt.idle();d.water.update=oldUpdate;
+    return {splats:p.count,pixelPassDisabled:true,quadrants,furthest,minDet,waterMotion,sandMotion,sandLightMotion,reflectionChanges,sandCaustics,frameReadbackBytes:0,frameSceneUploadBytes:0};
+  });
+  await page.screenshot({path:new URL('gaussian-water.png',evidence).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await page.getByRole('button',{name:'Shallows',exact:true}).click();
+  await page.evaluate(async()=>{gaussianDemo.renderAt(3);await gaussianDemo.runtime.idle();});
+  await page.screenshot({path:new URL('gaussian-shallows.png',evidence).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await page.evaluate(async()=>{gaussianDemo.state.ocean=false;gaussianDemo.renderAt(3);await gaussianDemo.runtime.idle();});
+  await page.screenshot({path:new URL('gaussian-sand.png',evidence).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await page.evaluate(()=>{gaussianDemo.state.ocean=true;});
+  await page.locator('#renderer-mode').selectOption('pixels');
+  await page.waitForFunction(()=>gaussianDemo.state.renderer==='pixels');
+  const restored=await page.evaluate(async()=>{gaussianDemo.renderAt(3);await gaussianDemo.runtime.idle();return {count:gaussianDemo.pipeline.count,visible:gaussianDemo.water.mesh.visible,depth:gaussianDemo.state.depth};});
+  if(restored.count!==originalPipelineCount||!restored.visible||restored.depth!==1.8)throw Error('Mode switch did not restore per-pixel renderer and preserve settings');
   await page.evaluate(()=>gaussianDemo.dispose());
   report.desktopDisposed=true;
   const mobile = await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -175,6 +240,13 @@ try {
   await mobile.locator('#clouds').tap();await mobile.locator('#collapse').tap();
   await mobile.evaluate(async()=>{gaussianDemo.renderAt(3);await gaussianDemo.runtime.idle();});
   await mobile.screenshot({path:new URL('mobile.png',evidence).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await mobile.locator('#collapse').tap();await mobile.locator('#renderer-mode').selectOption('splats');
+  await mobile.waitForFunction(()=>gaussianDemo.state.renderer==='splats'||gaussianDemo.error,null,{timeout:60000});
+  await mobile.locator('#collapse').tap();
+  report.mobile.gaussianSplats=await mobile.evaluate(async()=>{if(gaussianDemo.error)throw Error(gaussianDemo.error);gaussianDemo.renderAt(3);await gaussianDemo.runtime.idle();if(gaussianDemo.water.mesh.visible)throw Error('Mobile pixel overlay still visible');return gaussianDemo.pipeline.count;});
+  await mobile.screenshot({path:new URL('gaussian-mobile.png',evidence).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await mobile.reload();await mobile.waitForFunction(()=>gaussianDemo.ready||gaussianDemo.error,null,{timeout:60000});
+  if(await mobile.evaluate(()=>gaussianDemo.state.renderer)!=='splats')throw Error('Shared renderer URL did not restore Gaussian mode');
   await mobile.evaluate(()=>gaussianDemo.dispose());
   if(errors.length)throw Error(errors.join('\n'));
   report.passed=true;

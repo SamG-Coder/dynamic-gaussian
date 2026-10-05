@@ -7,6 +7,8 @@
 <section class="intro"><div class="eyebrow">COMPUTED, NOT CAPTURED</div><h1>Dynamic<br>Gaussian.</h1><p>A spectral ocean. Volumetric skies.<br>One field of light, written in CUDA.</p></section>
 <aside id="controls"><div class="panel-head"><span>SCENE CONTROLS</span><button id="collapse" aria-label="Collapse scene controls" aria-expanded="true">−</button></div>
 <div id="settings"><div class="presets"><button data-preset="golden" class="selected">Golden hour</button><button data-preset="blue">Blue hour</button><button data-preset="rough">Open sea</button><button data-preset="shallow">Shallows</button></div>
+<label for="renderer-mode">Water renderer<select id="renderer-mode"><option value="pixels">Per-pixel water</option><option value="splats">Gaussian splats</option></select></label>
+<p id="renderer-note" class="renderer-note">Per-pixel water with Gaussian clouds.</p>
 <label>Swell <output id="swell-value">0.80</output><input id="swell" type="range" min="0" max="2" step="0.01" value="0.8"></label>
 <label>Wind <output id="wind-value">0.80</output><input id="wind" type="range" min="0" max="2" step="0.01" value="0.8"></label>
 <label>Ripples <output id="ripples-value">0.80</output><input id="ripples" type="range" min="0" max="2" step="0.01" value="0.8"></label>

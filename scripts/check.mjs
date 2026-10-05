@@ -12,7 +12,7 @@ for (const directory of ['', 'scripts/', 'tests/']) {
     if (result.status !== 0) throw Error(`JavaScript syntax check failed: ${name}`);
   }
 }
-const source = (await Promise.all(['volume.cu', 'scene.cu', 'caustics.cu', 'water.cu', 'ocean-fft.cu'].map(name => readFile(new URL(name, root), 'utf8')))).join('\n');
+const source = (await Promise.all(['volume.cu', 'scene.cu', 'caustics.cu', 'water.cu', 'surface-splats.cu', 'ocean-fft.cu'].map(name => readFile(new URL(name, root), 'utf8')))).join('\n');
 const entries = [...source.matchAll(/__global__\s+void\s+(\w+)\s*\(/g)].map(match => match[1]);
 for (const entry of entries) {
   const artifact = compile(source, { entry, workgroupSize: [128, 1, 1] });
