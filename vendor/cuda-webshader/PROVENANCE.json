@@ -1,0 +1,176 @@
+{
+  "repository": "https://github.com/SamG-Coder/cuda-webshader",
+  "commit": "d6b9de81a68c1ced62144d325fdc701dd368b6ea",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "src/compiler/buffer-references.js",
+      "sha256": "c0a87f696749487d28c1e4607b40641a71db01cb6814bb1d52ebd78e9604e15e"
+    },
+    {
+      "path": "src/compiler/clone-ast.js",
+      "sha256": "b033ffe37c052084716712eacd5ad42884f2492819da0bb9dd34070c3db5fcbc"
+    },
+    {
+      "path": "src/compiler/compiler.js",
+      "sha256": "3054367b4c82ae99957ab9218693423b086f8387f2c24e5ea86bbc23d6f01bcc"
+    },
+    {
+      "path": "src/compiler/constant-rows.js",
+      "sha256": "6cd0a45a5b7c48c3acef05bcf078db5300c02a0118471d02642cd3be49b46360"
+    },
+    {
+      "path": "src/compiler/constexpr.js",
+      "sha256": "ebf2f547707efe8fa2b51165c5965241a446674fc044fbe78f0af0acf60136d1"
+    },
+    {
+      "path": "src/compiler/curand-xorwow.js",
+      "sha256": "1104be76167617dc1547475a20567af0aabb00d5cfc5f9cbec054c42afa8e7da"
+    },
+    {
+      "path": "src/compiler/deferred-pointers.js",
+      "sha256": "2e535c2ba18d4e98fa5d2eec4e969ce19cc87882b7d5d3448763e80f457b2ca4"
+    },
+    {
+      "path": "src/compiler/device-heap.js",
+      "sha256": "2564c837afc5753a70fad36ea3ff4c91d95cc5e59c1135645280f0d7b912f947"
+    },
+    {
+      "path": "src/compiler/device-launch.js",
+      "sha256": "fe16a80a364cc32006a25d92dce2f2886c052e40705c874a666778f43a83da2f"
+    },
+    {
+      "path": "src/compiler/diagnostics.js",
+      "sha256": "1f8e70a6ef384ad9562a1bafc4835195154baf3d26fe69ecbe6846b269a90265"
+    },
+    {
+      "path": "src/compiler/float64.js",
+      "sha256": "3bfc895fc2f716a04f990395793749c71b2f0c8912bfcfd46d7fa720fddc881d"
+    },
+    {
+      "path": "src/compiler/full-workgroups.js",
+      "sha256": "52e1104d6b6b01a85eb2cd5f6937bf367bef58c7bb60d1030ec130dfad716e4d"
+    },
+    {
+      "path": "src/compiler/integer-expression.js",
+      "sha256": "77c80b128ec5f33fc41e935cf173fbd0d0385682d716b94dcfdffe84d3bddb33"
+    },
+    {
+      "path": "src/compiler/loop-unroll.js",
+      "sha256": "eb4e85a24d5cdae0076dae17a1ef3e8d09194dbfb50c7e05b98ad7b9f9c5af9a"
+    },
+    {
+      "path": "src/compiler/macros.js",
+      "sha256": "2d1cee1ff881e8cea3db8287dc2deecac3133edf5b9b3f80a548f10366e3b4b2"
+    },
+    {
+      "path": "src/compiler/module-constexpr.js",
+      "sha256": "c3bfb5f3cc397012cb75d29558034bf6313c25a353bb8d74fce547e808e1eca4"
+    },
+    {
+      "path": "src/compiler/native-artifact.js",
+      "sha256": "155c77bdcebffc8b57f603cfdf1084d59aca4bfcd45609d194f47c305882e2a0"
+    },
+    {
+      "path": "src/compiler/native-records.js",
+      "sha256": "332953d7c417281c7fc5bb3c295b709aa72bf9210c37c1f9ae56bad313fc6b5d"
+    },
+    {
+      "path": "src/compiler/native-tile-phases.js",
+      "sha256": "8a77812744aa536f32f001cb8c8aae46ffc3bbb595e55c3b676967feffc79910"
+    },
+    {
+      "path": "src/compiler/native-tiles.js",
+      "sha256": "83c999bc58fd131824ff2a386e617e56fa3cb415ef0ba97020fd0998a75912c3"
+    },
+    {
+      "path": "src/compiler/parser.js",
+      "sha256": "12b67a90b8b6a767e29c6c510d2efc3bf0ad9657707ef7c77ae0c64e85d222af"
+    },
+    {
+      "path": "src/compiler/record-parameters.js",
+      "sha256": "b73601c83dcab892c16489a6614af094502bbc1cc92cd41c565afd2be4d8c305"
+    },
+    {
+      "path": "src/compiler/return-phases.js",
+      "sha256": "888d74f4952e28db6284b00617dcbf9fc088dd87c36d032cced06fa02ef7222e"
+    },
+    {
+      "path": "src/compiler/scoped-enums.js",
+      "sha256": "25d18c9d5965832e2cadaf2ec1c4c415aadb5f11c027104abad707996bd9463e"
+    },
+    {
+      "path": "src/compiler/specialize-dependencies.js",
+      "sha256": "31df83a59b99963355488c30530d9e8c5b19dfbc7e14d500343e2f3efcfcb601"
+    },
+    {
+      "path": "src/compiler/texture-types.js",
+      "sha256": "b203ebcbff2cd0ec3af34b57342fe8192263ab8f9136aa37ae1a754532e99539"
+    },
+    {
+      "path": "src/compiler/tiled-groups.js",
+      "sha256": "522c1817fd7b56caca126a9d1b109ee2884c3201f23eab659a1a29ad02bd3603"
+    },
+    {
+      "path": "src/compiler/uniform-records.js",
+      "sha256": "71255aa1015696d6422f501ce61fb57a6218d243b80ce48a3c2c1923e2adb889"
+    },
+    {
+      "path": "src/compiler/value-classes.js",
+      "sha256": "86ffcdf56126f5a638e7bc60681569cd38ac3f30f649756be0307f61f9dc7ab3"
+    },
+    {
+      "path": "src/compiler/vector-constructor.js",
+      "sha256": "66b10ddaefa43e40e67a8e22a1828a90bcc2d71d83e1683d4e44e345dfd88279"
+    },
+    {
+      "path": "src/compiler/wgsl-dependencies.js",
+      "sha256": "3a005a24135b15fdab4e557ef1148567599fe1c76244a1cabdb1248acb362c1b"
+    },
+    {
+      "path": "src/runtime/backend.js",
+      "sha256": "72ce681b5e6047eb0cf533692d400223412e074faa86cc2cc28c36eb0de48791"
+    },
+    {
+      "path": "src/runtime/fft-kernels.js",
+      "sha256": "a8d2f750039e6346c62f983b1c906acede58c33f91e0bc184845fbb40e0b4fec"
+    },
+    {
+      "path": "src/runtime/native-cuda/transport.js",
+      "sha256": "53f54d1b4296e692df5dd877a7a873b831cc9237c8da624bc37e8336cfeb31ee"
+    },
+    {
+      "path": "src/runtime/native-interop.js",
+      "sha256": "66f1410df38f481977e75b1dee11c8690a0a1163189845754ffa836232dfe6f8"
+    },
+    {
+      "path": "src/runtime/native-optix.js",
+      "sha256": "f2d21601e0697f074e509fdb3f01a2e871cfa4acb1310867d0d452ff86b971b6"
+    },
+    {
+      "path": "src/runtime/native-runtime.js",
+      "sha256": "1846585f1410bd799ed17e8583698649af78dce2172ca26f4b53c0a2fbdd93e4"
+    },
+    {
+      "path": "src/runtime/object-arena.js",
+      "sha256": "20618513b04b050f93f8180a52bf16d69fd56c512b409960e57efd4df0a2e4c5"
+    },
+    {
+      "path": "src/runtime/recursive-launches.js",
+      "sha256": "aac02df143ac871aa5e9af18229dae760b63ce7708f85e4e9f83846bcc183aa5"
+    },
+    {
+      "path": "src/runtime/runtime.js",
+      "sha256": "696839ac31dd0aec8dc1e0ba213a574800d56b63eebd422a813bb7f548170796"
+    },
+    {
+      "path": "src/runtime/scan-kernels.js",
+      "sha256": "b5ee443ef9330730bda491586cf44c66efc25a860665eaa487d155e8b3d875ac"
+    },
+    {
+      "path": "src/runtime/sort-kernels.js",
+      "sha256": "fbaf12de79cf4789414d607f7ed247a3fe135b26f636c1951f68ae38d007d68d"
+    }
+  ],
+  "lineEndings": "LF; source taken from the recorded Git commit"
+}

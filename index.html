@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dynamic Gaussian · CUDA WebShader</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.webgpu.js","three/webgpu":"./node_modules/three/build/three.webgpu.js","three/tsl":"./node_modules/three/build/three.tsl.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script></head>
+<body><main id="viewport" aria-label="Interactive procedural Gaussian ocean"></main>
+<header><a href="./">DG<span>DYNAMIC GAUSSIAN</span></a><span class="badge"><i></i> LIVE GAUSSIAN FIELD</span></header>
+<section class="intro"><div class="eyebrow">COMPUTED, NOT CAPTURED</div><h1>Dynamic<br>Gaussian.</h1><p>A spectral ocean. Volumetric skies.<br>One field of light, written in CUDA.</p></section>
+<aside id="controls"><div class="panel-head"><span>SCENE CONTROLS</span><button id="collapse" aria-label="Collapse scene controls" aria-expanded="true">−</button></div>
+<div id="settings"><div class="presets"><button data-preset="golden" class="selected">Golden hour</button><button data-preset="blue">Blue hour</button><button data-preset="rough">Open sea</button><button data-preset="shallow">Shallows</button></div>
+<label>Swell <output id="swell-value">0.80</output><input id="swell" type="range" min="0" max="2" step="0.01" value="0.8"></label>
+<label>Wind <output id="wind-value">0.80</output><input id="wind" type="range" min="0" max="2" step="0.01" value="0.8"></label>
+<label>Ripples <output id="ripples-value">0.80</output><input id="ripples" type="range" min="0" max="2" step="0.01" value="0.8"></label>
+<label>Water depth · m <output id="depth-value">3.00</output><input id="depth" type="range" min="1" max="14" step="0.1" value="3"></label>
+<label>Sand caustics <output id="causticStrength-value">1.40</output><input id="causticStrength" type="range" min="0" max="3" step="0.01" value="1.4"></label>
+<label>Reflections <output id="reflections-value">0.90</output><input id="reflections" type="range" min="0" max="1" step="0.01" value="0.9"></label>
+<label>Light shafts <output id="rays-value">1.00</output><input id="rays" type="range" min="0" max="3" step="0.01" value="1"></label>
+<div class="layers"><label><input id="clouds" type="checkbox" checked>Clouds</label><label><input id="ocean" type="checkbox" checked>Ocean</label><label><input id="sand" type="checkbox" checked>Sand</label><label><input id="shafts" type="checkbox" checked>Rays</label><label><input id="far" type="checkbox" checked>Far water</label></div>
+<div class="actions"><button id="pause">Pause</button><button id="reset">Reset view</button></div>
+<p class="note">Drag to orbit · scroll to explore<br>Touch: one finger orbit, two fingers zoom</p></div></aside>
+<footer><div><span class="status-dot"></span><strong id="status" role="status">Preparing GPU pipeline…</strong><span id="stats"></span></div><a href="water.cu" target="_blank">VIEW CUDA SOURCE ↗</a></footer>
+<div id="loading"><span class="loader"></span><p id="loading-text">Compiling a field of light…</p></div>
+<script type="module" src="app.js"></script></body></html>

@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "softwareAdapterRequested": false,
+  "gpu": {
+    "device": {
+      "backend": "webgpu",
+      "native": {
+        "available": null,
+        "permission": "not-queried",
+        "reason": "webgpu-requested"
+      },
+      "vendor": "nvidia",
+      "architecture": "blackwell",
+      "device": "",
+      "description": "",
+      "features": [
+        "core-features-and-limits",
+        "subgroup-size-control",
+        "subgroups",
+        "float32-filterable",
+        "shader-f16",
+        "timestamp-query"
+      ],
+      "timestampQuery": true,
+      "limits": {
+        "maxComputeInvocationsPerWorkgroup": 1024,
+        "maxComputeWorkgroupStorageSize": 16384,
+        "maxStorageBufferBindingSize": 268435456
+      }
+    },
+    "splats": 660496,
+    "minDeterminant": 39.778640275471844,
+    "moving": 655360,
+    "waterAnimation": 715003,
+    "cloudShapeChanges": 287312,
+    "cloudFormation": 22278,
+    "quadrants": [
+      7804,
+      10132,
+      11991,
+      6810
+    ],
+    "cloudMeanRadiance": 0.6101736401886033,
+    "reflectionChanges": 722880,
+    "viewChanges": 720814,
+    "globalDepthSort": "logarithmic 4096 bins",
+    "frameReadbackBytes": 0,
+    "frameSceneUploadBytes": 0,
+    "frames": 97,
+    "observedFps": 60.468174848522224,
+    "fft": {
+      "n": 256,
+      "heightRms": 0.8639765049728692,
+      "hermitianError": 0,
+      "maxImaginary": 0.0000010461908459546976,
+      "dftError": 5.854338259725367e-7
+    },
+    "cloudVolume": {
+      "cells": 368640,
+      "nonempty": 18186,
+      "shadowed": 13468
+    },
+    "cardinalCoverage": [
+      723280,
+      723280,
+      723280,
+      723280
+    ],
+    "rippleChanges": 570265,
+    "waterPixels": 1296000,
+    "caustics": {
+      "resolution": 1024,
+      "meanFlux": 0.9973222385160625,
+      "fluxDeviation": 0.3399705287844641,
+      "causticAnimation": 1046923,
+      "causticsWithoutSand": 0,
+      "sandCausticChanges": 297319,
+      "depthChanges": 679669
+    }
+  },
+  "desktopDisposed": true,
+  "mobile": {
+    "splats": 58896,
+    "noOverflow": true,
+    "controlsCollapsed": true
+  }
+}
